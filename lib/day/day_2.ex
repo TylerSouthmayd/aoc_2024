@@ -1,16 +1,4 @@
 defmodule AOC.Day2 do
-  defp parse() do
-    {:ok, content} = File.read(Path.join(["input", "day2.txt"]))
-
-    content
-    |> String.split("\n", trim: true)
-    |> Enum.map(fn line ->
-      line
-      |> String.split(" ", trim: true)
-      |> Enum.map(&String.to_integer/1)
-    end)
-  end
-
   def solve_part1() do
     content = parse()
 
@@ -66,5 +54,17 @@ defmodule AOC.Day2 do
         diff <= 3 and diff >= 1 and comparator.([a, b])
       end
     )
+  end
+
+  defp parse() do
+    {:ok, content} = File.read(Path.join(["input", "day2.txt"]))
+
+    content
+    |> String.split("\n", trim: true)
+    |> Enum.map(fn line ->
+      line
+      |> String.split(" ", trim: true)
+      |> Enum.map(&String.to_integer/1)
+    end)
   end
 end

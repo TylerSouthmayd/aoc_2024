@@ -1,12 +1,4 @@
 defmodule AOC.Day4 do
-  defp parse() do
-    {:ok, content} = File.read(Path.join(["input", "day4.txt"]))
-
-    content
-    |> String.split("\n", trim: true)
-    |> Enum.map(&String.graphemes/1)
-  end
-
   def solve_part1() do
     grid = parse()
     word = String.graphemes("XMAS")
@@ -28,11 +20,11 @@ defmodule AOC.Day4 do
         col <- 0..(length(hd(grid)) - 1),
         matches_character?(grid, ["A"], {row, col}, 0),
         reduce: 0 do
-      acc -> acc + mas_search(grid, {row, col})
+      acc -> acc + xmas_search(grid, {row, col})
     end
   end
 
-  defp mas_search(grid, {row, col}) do
+  defp xmas_search(grid, {row, col}) do
     corners = [
       {:down_right, move({row, col}, :up_left)},
       {:down_left, move({row, col}, :up_right)}
@@ -71,4 +63,12 @@ defmodule AOC.Day4 do
   defp move({row, col}, :down_right), do: {row + 1, col + 1}
   defp move({row, col}, :down_left), do: {row + 1, col - 1}
   defp move({row, col}, :up_left), do: {row - 1, col - 1}
+
+  defp parse() do
+    {:ok, content} = File.read(Path.join(["input", "day4.txt"]))
+
+    content
+    |> String.split("\n", trim: true)
+    |> Enum.map(&String.graphemes/1)
+  end
 end

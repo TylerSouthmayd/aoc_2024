@@ -1,21 +1,4 @@
 defmodule AOC.Day1 do
-  defp parse() do
-    {:ok, content} = File.read(Path.join(["input", "day1.txt"]))
-
-    content
-    |> String.split("\n", trim: true)
-    |> Enum.reduce({[], []}, fn line, {first, second} ->
-      [e1, e2] =
-        String.split(line, " ", trim: true)
-        |> Enum.map(&String.to_integer/1)
-
-      {
-        [e1 | first],
-        [e2 | second]
-      }
-    end)
-  end
-
   def solve_part1() do
     {first, second} = parse()
 
@@ -34,6 +17,23 @@ defmodule AOC.Day1 do
 
     Enum.reduce(first, 0, fn n, acc ->
       acc + Map.get(frequencies, n, 0) * n
+    end)
+  end
+
+  defp parse() do
+    {:ok, content} = File.read(Path.join(["input", "day1.txt"]))
+
+    content
+    |> String.split("\n", trim: true)
+    |> Enum.reduce({[], []}, fn line, {first, second} ->
+      [e1, e2] =
+        String.split(line, " ", trim: true)
+        |> Enum.map(&String.to_integer/1)
+
+      {
+        [e1 | first],
+        [e2 | second]
+      }
     end)
   end
 end

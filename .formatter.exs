@@ -1,4 +1,4 @@
 # Used by "mix format"
 [
-  inputs: ["{mix,.formatter}.exs", "{config,lib,test}/**/*.{ex,exs}", ".iex.exs"]
+  inputs: ["{mix,.formatter}.exs", "{config,lib,test,template}/**/*.{ex,exs}", ".iex.exs"]
 ]

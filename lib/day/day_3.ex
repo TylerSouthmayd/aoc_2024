@@ -1,9 +1,4 @@
 defmodule AOC.Day3 do
-  defp parse() do
-    {:ok, content} = File.read(Path.join(["input", "day3.txt"]))
-    content
-  end
-
   def solve_part1() do
     content = parse()
 
@@ -34,5 +29,10 @@ defmodule AOC.Day3 do
       end
     end)
     |> elem(0)
+  end
+
+  defp parse() do
+    {:ok, content} = File.read(Path.join(["input", "day3.txt"]))
+    content
   end
 end

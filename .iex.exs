@@ -1,1 +1,1 @@
-AOC.Day4.solve_part2()
+AOC.Day5.solve_part2()
