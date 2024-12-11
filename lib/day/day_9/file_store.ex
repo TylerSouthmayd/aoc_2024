@@ -17,9 +17,10 @@ defmodule FileStore do
     if length(target_store.list) == target_store.capacity or length(source_store.list) == 0 do
       {target_store, source_store}
     else
-      new_target_store = %{target_store | list: target_store.list ++ [hd(source_store.list)]}
-      new_source_store = %{source_store | list: tl(source_store.list)}
-      transfer_until_capacity(new_target_store, new_source_store)
+      transfer_until_capacity(
+        %{target_store | list: target_store.list ++ [hd(source_store.list)]},
+        %{source_store | list: tl(source_store.list)}
+      )
     end
   end
 

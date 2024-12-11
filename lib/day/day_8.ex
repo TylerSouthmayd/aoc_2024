@@ -91,16 +91,7 @@ defmodule AOC.Day8 do
   end
 
   defp parse(input) do
-    content =
-      case input do
-        nil ->
-          case File.read(Path.join(["input", "day8.txt"])) do
-            {:ok, content} -> content
-          end
-
-        _ ->
-          input
-      end
+    content = AOC.get_input(8, input)
 
     lines =
       content

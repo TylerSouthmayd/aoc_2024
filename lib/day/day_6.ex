@@ -59,18 +59,7 @@ defmodule AOC.Day6 do
   defp turn(:down), do: :left
 
   defp parse(input) do
-    content =
-      case input do
-        nil ->
-          case File.read(Path.join(["input", "day6.txt"])) do
-            {:ok, content} -> content
-          end
-
-        _ ->
-          input
-      end
-
-    content
+    AOC.get_input(6, input)
     |> String.split("\n")
     |> Enum.with_index()
     |> Enum.reduce({[], nil}, fn {row, ri}, {grid, start} ->

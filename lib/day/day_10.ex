@@ -52,18 +52,7 @@ defmodule AOC.Day10 do
   end
 
   defp parse(input) do
-    content =
-      case input do
-        nil ->
-          case File.read(Path.join(["input", "day10.txt"])) do
-            {:ok, content} -> content
-          end
-
-        _ ->
-          input
-      end
-
-    content
+    AOC.get_input(10, input)
     |> String.split("\n", trim: true)
     |> Enum.with_index()
     |> Enum.reduce({MapSet.new(), []}, fn {line, row}, {trail_heads, grid} ->

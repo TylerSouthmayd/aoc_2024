@@ -1,6 +1,6 @@
 defmodule AOC.Day3 do
-  def solve_part1() do
-    content = parse()
+  def solve_part1(input \\ nil) do
+    content = AOC.get_input(3, input)
 
     Regex.scan(~r/mul\((\d+),(\d+)\)/, content)
     |> Enum.reduce(0, fn [_, a, b], acc ->
@@ -8,8 +8,8 @@ defmodule AOC.Day3 do
     end)
   end
 
-  def solve_part2() do
-    content = parse()
+  def solve_part2(input \\ nil) do
+    content = AOC.get_input(3, input)
 
     Regex.scan(~r/(mul\((\d+),(\d+)\)|do\(\)|don\'t\(\))/, content)
     |> Enum.reduce({0, true}, fn match, {sum, enabled} ->
@@ -29,10 +29,5 @@ defmodule AOC.Day3 do
       end
     end)
     |> elem(0)
-  end
-
-  defp parse() do
-    {:ok, content} = File.read(Path.join(["input", "day3.txt"]))
-    content
   end
 end

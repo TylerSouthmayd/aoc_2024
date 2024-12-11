@@ -1,20 +1,12 @@
 defmodule AOC.Day2 do
-  def solve_part1() do
-    content = parse()
-
-    Enum.reduce(content, 0, fn line, acc ->
-      if validate_line(line) do
-        acc + 1
-      else
-        acc
-      end
+  def solve_part1(input \\ nil) do
+    Enum.reduce(parse(input), 0, fn line, acc ->
+      if validate_line(line), do: acc + 1, else: acc
     end)
   end
 
-  def solve_part2() do
-    content = parse()
-
-    Enum.reduce(content, 0, fn line, acc ->
+  def solve_part2(input \\ nil) do
+    Enum.reduce(parse(input), 0, fn line, acc ->
       choices =
         [
           line
@@ -52,10 +44,8 @@ defmodule AOC.Day2 do
     )
   end
 
-  defp parse() do
-    {:ok, content} = File.read(Path.join(["input", "day2.txt"]))
-
-    content
+  defp parse(input) do
+    AOC.get_input(2, input)
     |> String.split("\n", trim: true)
     |> Enum.map(fn line ->
       line

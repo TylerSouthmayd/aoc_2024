@@ -1,6 +1,6 @@
 defmodule AOC.Day5 do
-  def solve_part1() do
-    {rules, page_lists} = parse()
+  def solve_part1(input \\ nil) do
+    {rules, page_lists} = parse(input)
 
     page_lists
     |> Enum.filter(&valid_page_list?(&1, rules))
@@ -8,8 +8,8 @@ defmodule AOC.Day5 do
     |> Enum.sum()
   end
 
-  def solve_part2() do
-    {rules, page_lists} = parse()
+  def solve_part2(input \\ nil) do
+    {rules, page_lists} = parse(input)
 
     page_lists
     |> Enum.filter(&(!valid_page_list?(&1, rules)))
@@ -81,10 +81,8 @@ defmodule AOC.Day5 do
     Enum.at(list, div(length(list), 2))
   end
 
-  defp parse() do
-    {:ok, content} = File.read(Path.join(["input", "day5.txt"]))
-
-    content
+  defp parse(input) do
+    AOC.get_input(5, input)
     |> String.split("\n", trim: true)
     |> Enum.reduce({%{}, []}, fn line, {rules, page_lists} ->
       cond do

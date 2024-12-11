@@ -8,17 +8,6 @@ defmodule AOC.DayX do
   end
 
   defp parse(input) do
-    content =
-      case input do
-        nil ->
-          case File.read(Path.join(["input", "dayx.txt"])) do
-            {:ok, content} -> content
-          end
-
-        _ ->
-          input
-      end
-
-    content
+    AOC.get_input(0, input)
   end
 end

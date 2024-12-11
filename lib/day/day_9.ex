@@ -6,18 +6,7 @@ defmodule AOC.Day9 do
   end
 
   def parse(input) do
-    content =
-      case input do
-        nil ->
-          case File.read(Path.join(["input", "day9.txt"])) do
-            {:ok, content} -> content
-          end
-
-        _ ->
-          input
-      end
-
-    content
+    AOC.get_input(9, input)
     |> String.graphemes()
     |> Enum.map(&String.to_integer/1)
     |> Enum.chunk_every(2)

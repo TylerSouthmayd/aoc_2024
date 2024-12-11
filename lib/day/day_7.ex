@@ -57,18 +57,7 @@ defmodule AOC.Day7 do
   end
 
   defp parse(input) do
-    content =
-      case input do
-        nil ->
-          case File.read(Path.join(["input", "day7.txt"])) do
-            {:ok, content} -> content
-          end
-
-        _ ->
-          input
-      end
-
-    content
+    AOC.get_input(7, input)
     |> String.split("\n", trim: true)
     |> Enum.map(fn line ->
       [line, nums] = String.split(line, ":")

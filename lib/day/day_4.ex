@@ -1,6 +1,6 @@
 defmodule AOC.Day4 do
-  def solve_part1() do
-    grid = parse()
+  def solve_part1(input \\ nil) do
+    grid = parse(input)
     word = String.graphemes("XMAS")
     directions = [:right, :down, :left, :up, :up_left, :up_right, :down_left, :down_right]
 
@@ -13,8 +13,8 @@ defmodule AOC.Day4 do
     end
   end
 
-  def solve_part2() do
-    grid = parse()
+  def solve_part2(input \\ nil) do
+    grid = parse(input)
 
     for row <- 0..(length(grid) - 1),
         col <- 0..(length(hd(grid)) - 1),
@@ -55,10 +55,8 @@ defmodule AOC.Day4 do
       GridUtils.cell_value({row, col}, grid) == Enum.at(word, index)
   end
 
-  defp parse() do
-    {:ok, content} = File.read(Path.join(["input", "day4.txt"]))
-
-    content
+  defp parse(input) do
+    AOC.get_input(4, input)
     |> String.split("\n", trim: true)
     |> Enum.map(&String.graphemes/1)
   end
