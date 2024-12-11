@@ -26,8 +26,8 @@ defmodule AOC.Day4 do
 
   defp xmas_search(grid, {row, col}) do
     corners = [
-      {:down_right, move({row, col}, :up_left)},
-      {:down_left, move({row, col}, :up_right)}
+      {:down_right, GridUtils.move({row, col}, :up_left)},
+      {:down_left, GridUtils.move({row, col}, :up_right)}
     ]
 
     if Enum.all?(corners, fn {direction, position} ->
@@ -45,24 +45,15 @@ defmodule AOC.Day4 do
 
   defp word_search(grid, word, {row, col}, word_index, direction) do
     if matches_character?(grid, word, {row, col}, word_index),
-      do: word_search(grid, word, move({row, col}, direction), word_index + 1, direction),
+      do:
+        word_search(grid, word, GridUtils.move({row, col}, direction), word_index + 1, direction),
       else: 0
   end
 
   defp matches_character?(grid, word, {row, col}, index) do
-    row >= 0 and row < length(grid) and
-      col >= 0 and col < length(hd(grid)) and
-      Enum.at(Enum.at(grid, row), col) == Enum.at(word, index)
+    GridUtils.in_bound?({row, col}, grid) and
+      GridUtils.cell_value({row, col}, grid) == Enum.at(word, index)
   end
-
-  defp move({row, col}, :right), do: {row, col + 1}
-  defp move({row, col}, :down), do: {row + 1, col}
-  defp move({row, col}, :left), do: {row, col - 1}
-  defp move({row, col}, :up), do: {row - 1, col}
-  defp move({row, col}, :up_right), do: {row - 1, col + 1}
-  defp move({row, col}, :down_right), do: {row + 1, col + 1}
-  defp move({row, col}, :down_left), do: {row + 1, col - 1}
-  defp move({row, col}, :up_left), do: {row - 1, col - 1}
 
   defp parse() do
     {:ok, content} = File.read(Path.join(["input", "day4.txt"]))

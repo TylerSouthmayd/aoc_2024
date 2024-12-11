@@ -10,15 +10,15 @@ defmodule AOC.Day9.Part1 do
   end
 
   defp fill_empty_locations(content) do
-    fill_empty_locations_from_right(content, 0, length(content) - 1)
+    fill_empty_locations(content, 0, length(content) - 1)
   end
 
-  defp fill_empty_locations_from_right(content, head_position, tail_position)
+  defp fill_empty_locations(content, head_position, tail_position)
        when head_position >= tail_position do
     content
   end
 
-  defp fill_empty_locations_from_right(content, head_position, tail_position) do
+  defp fill_empty_locations(content, head_position, tail_position) do
     head_file = Enum.at(content, head_position)
     tail_file = Enum.at(content, tail_position)
 
@@ -27,9 +27,9 @@ defmodule AOC.Day9.Part1 do
     content = List.replace_at(content, tail_position, new_tail_file)
 
     if length(new_tail_file.list) == 0 do
-      fill_empty_locations_from_right(content, head_position, tail_position - 1)
+      fill_empty_locations(content, head_position, tail_position - 1)
     else
-      fill_empty_locations_from_right(content, head_position + 1, tail_position)
+      fill_empty_locations(content, head_position + 1, tail_position)
     end
   end
 end

@@ -29,13 +29,9 @@ defmodule AOC.Day2 do
     end)
   end
 
-  defp increasing_comparator([a, b]) do
-    a < b
-  end
+  defp increasing_comparator([a, b]), do: a < b
 
-  defp decreasing_comparator([a, b]) do
-    a > b
-  end
+  defp decreasing_comparator([a, b]), do: a > b
 
   defp validate_line(line) do
     chunks = Enum.chunk_every(line, 2, 1, :discard)

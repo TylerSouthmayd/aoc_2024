@@ -108,4 +108,12 @@ defmodule AOCTest do
     assert AOC.Day9.Part2.solve("2333133121414131401") == 2746
     # assert AOC.Day9.Part2.solve() == 6_265_268_809_555
   end
+
+  test "day 10 part 1" do
+    assert AOC.Day10.solve_part1() == 682
+  end
+
+  test "day 10 part 2" do
+    assert AOC.Day10.solve_part2() == 1511
+  end
 end

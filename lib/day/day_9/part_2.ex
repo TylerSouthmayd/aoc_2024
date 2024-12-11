@@ -4,10 +4,7 @@ defmodule AOC.Day9.Part2 do
       AOC.Day9.parse(input)
 
     (map_size(storage) - 1)..0
-    |> Enum.reduce(storage, fn block_id, file_store ->
-      move_blocks(file_store, 0, block_id)
-      # |> FileStore.print()
-    end)
+    |> Enum.reduce(storage, &move_blocks(&2, 0, &1))
     |> Map.values()
     |> Enum.sort_by(& &1.id)
     |> Enum.map(&FileStore.pad_to_capacity/1)
@@ -43,16 +40,11 @@ defmodule AOC.Day9.Part2 do
   end
 
   defp split_identity_list(store) do
-    {owned, transfered} = Enum.split_with(store.list, fn id -> id == store.id end)
-    own = %{store | list: owned}
+    {owned, from_transfer} = Enum.split_with(store.list, fn id -> id == store.id end)
 
-    remaining =
-      %{
-        store
-        | list: transfered,
-          capacity: store.capacity - length(owned)
-      }
-
-    {own, remaining}
+    {
+      %{store | list: owned},
+      %{store | list: from_transfer, capacity: store.capacity - length(owned)}
+    }
   end
 end

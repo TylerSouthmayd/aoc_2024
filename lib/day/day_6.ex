@@ -10,7 +10,7 @@ defmodule AOC.Day6 do
 
     for row <- 0..(length(grid) - 1),
         col <- 0..(length(hd(grid)) - 1),
-        cell_value({row, col}, grid) == ".",
+        GridUtils.cell_value({row, col}, grid) == ".",
         reduce: 0 do
       acc -> acc + walk_cycle(grid, MapSet.new(), start, :up, {row, col})
     end
@@ -18,8 +18,8 @@ defmodule AOC.Day6 do
 
   defp walk(grid, seen, curr_pos, direction) do
     seen = MapSet.put(seen, curr_pos)
-    next_pos = move(curr_pos, direction)
-    exiting = not in_bound?(next_pos, grid)
+    next_pos = GridUtils.move(curr_pos, direction)
+    exiting = not GridUtils.in_bound?(next_pos, grid)
     valid_next = valid_cell?(next_pos, grid)
 
     cond do
@@ -32,8 +32,8 @@ defmodule AOC.Day6 do
   defp walk_cycle(grid, seen, curr_pos, direction, override_pos) do
     cycle = MapSet.member?(seen, {direction, curr_pos})
     seen = MapSet.put(seen, {direction, curr_pos})
-    next_pos = move(curr_pos, direction)
-    exiting = not in_bound?(next_pos, grid)
+    next_pos = GridUtils.move(curr_pos, direction)
+    exiting = not GridUtils.in_bound?(next_pos, grid)
     valid_next = valid_cell?(next_pos, grid, override_pos)
 
     cond do
@@ -44,18 +44,9 @@ defmodule AOC.Day6 do
     end
   end
 
-  defp cell_value({row, col}, grid) do
-    Enum.at(Enum.at(grid, row), col)
-  end
-
-  defp in_bound?({row, col}, grid) do
-    row >= 0 and row < length(grid) and
-      col >= 0 and col < length(hd(grid))
-  end
-
   defp valid_cell?(pos, grid) do
-    in_bound?(pos, grid) and
-      cell_value(pos, grid) != "#"
+    GridUtils.in_bound?(pos, grid) and
+      GridUtils.cell_value(pos, grid) != "#"
   end
 
   defp valid_cell?(pos, grid, override_pos) do
@@ -66,11 +57,6 @@ defmodule AOC.Day6 do
   defp turn(:left), do: :up
   defp turn(:up), do: :right
   defp turn(:down), do: :left
-
-  defp move({row, col}, :right), do: {row, col + 1}
-  defp move({row, col}, :down), do: {row + 1, col}
-  defp move({row, col}, :left), do: {row, col - 1}
-  defp move({row, col}, :up), do: {row - 1, col}
 
   defp parse(input) do
     content =
