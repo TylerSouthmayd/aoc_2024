@@ -1,7 +1,6 @@
 defmodule GridUtils do
   def get_neighbors({row, col}, directions \\ [:up, :down, :left, :right]) do
-    directions
-    |> Enum.map(&GridUtils.move({row, col}, &1))
+    Enum.map(directions, &GridUtils.move({row, col}, &1))
   end
 
   def get_bounds(grid) do

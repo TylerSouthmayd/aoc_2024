@@ -1,4 +1,4 @@
-defmodule AOC.DayX do
+defmodule AOC.Day_DAY_ do
   def solve_part1(input \\ nil) do
     content = parse(input)
   end
@@ -8,6 +8,6 @@ defmodule AOC.DayX do
   end
 
   defp parse(input) do
-    AOC.get_input(0, input)
+    AOC.get_input(_DAY_, input)
   end
 end

@@ -15,17 +15,11 @@ defmodule AOC.Day10 do
     Enum.reduce(trail_heads, 0, &(&2 + elem(walk(grid, &1, 0, {MapSet.new(), 0}), 1)))
   end
 
-  defp walk(
-         _,
-         current_position,
-         current_value,
-         {valid_trails, unique_paths}
-       )
-       when current_value == 9,
-       do: {
-         MapSet.put(valid_trails, current_position),
-         unique_paths + 1
-       }
+  defp walk(_, current_position, 9, {valid_trails, unique_paths}),
+    do: {
+      MapSet.put(valid_trails, current_position),
+      unique_paths + 1
+    }
 
   defp walk(grid, current_position, current_value, tracking) do
     neighbors = get_neighbors(current_position, current_value, grid)
