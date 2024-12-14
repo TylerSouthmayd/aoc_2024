@@ -1,2 +1,2 @@
-AOC.Day11.solve_part1()
+AOC.Day12.solve_part2()
 |> IO.inspect()

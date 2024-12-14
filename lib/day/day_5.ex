@@ -12,7 +12,7 @@ defmodule AOC.Day5 do
     {rules, page_lists} = parse(input)
 
     page_lists
-    |> Enum.filter(&(!valid_page_list?(&1, rules)))
+    |> Enum.filter(&(not valid_page_list?(&1, rules)))
     |> Enum.map(&sort_pages(&1, rules))
     |> Enum.map(&middle_elem/1)
     |> Enum.sum()
