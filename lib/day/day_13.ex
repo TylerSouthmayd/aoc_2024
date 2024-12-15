@@ -13,11 +13,8 @@ defmodule AOC.Day13 do
 
   def solve(input) do
     Enum.reduce(input, 0, fn machine, cost ->
-      ans = solve_system(machine)
-      [a_presses, b_presses] = normalize_answer(machine, ans)
-
-      new_cost = 3 * a_presses + b_presses
-      cost + new_cost
+      [a_presses, b_presses] = solve_system(machine) |> normalize_answer(machine)
+      cost + 3 * a_presses + b_presses
     end)
   end
 
@@ -36,9 +33,7 @@ defmodule AOC.Day13 do
     multiply_2x2(invert_2x2!(coefficient_matrix), solution_matrix)
   end
 
-  defp multiply_2x2([[a, b], [c, d]], [e, f]) do
-    [a * e + b * f, c * e + d * f]
-  end
+  defp multiply_2x2([[a, b], [c, d]], [e, f]), do: [a * e + b * f, c * e + d * f]
 
   defp invert_2x2!([[a, b], [c, d]] = matrix) do
     determinant = determinant_2x2(matrix)
@@ -52,13 +47,11 @@ defmodule AOC.Day13 do
     [[determinant * d, determinant * b * -1], [determinant * c * -1, determinant * a]]
   end
 
-  defp determinant_2x2([[a, b], [c, d]]) do
-    a * d - b * c
-  end
+  defp determinant_2x2([[a, b], [c, d]]), do: a * d - b * c
 
   defp normalize_answer(
-         %ClawMachine{goal: {goal_x, goal_y}, a_mod: {ax_mod, ay_mod}, b_mod: {bx_mod, by_mod}},
-         [a_presses, b_presses]
+         [a_presses, b_presses],
+         %ClawMachine{goal: {goal_x, goal_y}, a_mod: {ax_mod, ay_mod}, b_mod: {bx_mod, by_mod}}
        ) do
     a_presses = round(a_presses)
     b_presses = round(b_presses)
