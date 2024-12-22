@@ -6,13 +6,14 @@ defmodule Robot do
           initial_position: {x, y},
           position: {x2, y2},
           x_velocity: x_vel,
-          y_velocity: y_vel
+          y_velocity: y_vel,
+          quadrant: q
         }) do
-      "ip=#{x},#{y} p=#{x2},#{y2} v=#{x_vel},#{y_vel}"
+      "ip=#{x},#{y} p=#{x2},#{y2} q=#{q} v=#{x_vel},#{y_vel}"
     end
   end
 
-  def print_robots(robots, {x_bound, y_bound}, second \\ 0) when is_list(robots) do
+  def print_robots(robots, {x_bound, y_bound}, second) when is_list(robots) do
     IO.puts("second #{second}:")
 
     position_map =
@@ -35,9 +36,8 @@ end
 
 defmodule AOC.Day14 do
   def solve_part1(input \\ nil, bounds \\ {101, 103}) do
-    robots = parse(input, bounds)
-
-    Enum.map(robots, fn robot ->
+    parse(input, bounds)
+    |> Enum.map(fn robot ->
       Enum.reduce(0..99, robot, fn _i, rb -> move_robot(rb, bounds) end)
     end)
     |> quadrant_stats()
@@ -65,7 +65,7 @@ defmodule AOC.Day14 do
 
   defp move_robot(
          %Robot{position: {x, y}, x_velocity: xv, y_velocity: yv} = robot,
-         {x_bound, y_bound}
+         {x_bound, y_bound} = bounds
        ) do
     new_position = {
       wrap_dimension(x + xv, x_bound),
@@ -75,7 +75,7 @@ defmodule AOC.Day14 do
     %Robot{
       robot
       | position: new_position,
-        quadrant: find_quadrant(new_position, {x_bound, y_bound})
+        quadrant: find_quadrant(new_position, bounds)
     }
   end
 
@@ -88,10 +88,10 @@ defmodule AOC.Day14 do
     mid_y = div(y_bound, 2)
 
     cond do
-      x < mid_x and y < mid_y -> 1
-      x > mid_x and y < mid_y -> 2
-      x < mid_x and y > mid_y -> 3
-      x > mid_x and y > mid_y -> 4
+      x < mid_x and y < mid_y -> :top_left
+      x > mid_x and y < mid_y -> :top_right
+      x < mid_x and y > mid_y -> :bottom_left
+      x > mid_x and y > mid_y -> :bottom_right
       true -> :none
     end
   end
@@ -99,14 +99,12 @@ defmodule AOC.Day14 do
   defp quadrant_stats(robots) do
     robots
     |> Enum.group_by(& &1.quadrant)
-    |> Enum.map(fn {quadrant, robots} ->
-      {quadrant, length(robots)}
-    end)
+    |> Enum.map(fn {quadrant, robots} -> {quadrant, length(robots)} end)
   end
 
   defp safety_score(quadrants) do
-    Enum.reduce(quadrants, 1, fn {quadrant, len}, acc ->
-      if quadrant == :none, do: acc, else: acc * len
+    Enum.reduce(quadrants, 1, fn {quadrant, members}, score ->
+      if quadrant == :none, do: score, else: score * members
     end)
   end
 

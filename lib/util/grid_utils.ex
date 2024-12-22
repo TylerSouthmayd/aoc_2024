@@ -36,6 +36,31 @@ defmodule GridUtils do
     Enum.at(Enum.at(grid, row), col)
   end
 
+  def cell_value({row, col}, map) when is_map(map) do
+    Map.get(map, {row, col})
+  end
+
+  def list_to_position_map(grid) when is_list(grid) do
+    for {row, i} <- Enum.with_index(grid),
+        {value, j} <- Enum.with_index(row),
+        into: %{} do
+      {{i, j}, value}
+    end
+  end
+
+  def position_map_to_list(map, {row_bound, col_bound}) when is_map(map) do
+    for row <- 0..(row_bound - 1) do
+      for col <- 0..(col_bound - 1) do
+        Map.get(map, {row, col}, ".")
+      end
+    end
+  end
+
+  def opposite(:right), do: :left
+  def opposite(:left), do: :right
+  def opposite(:up), do: :down
+  def opposite(:down), do: :up
+
   def move({row, col}, :right), do: {row, col + 1}
   def move({row, col}, :down), do: {row + 1, col}
   def move({row, col}, :left), do: {row, col - 1}
