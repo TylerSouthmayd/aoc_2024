@@ -10,7 +10,6 @@ defmodule AOC.Day15.Part2 do
       AOC.Day15.score(position)
     end)
     |> Enum.sum()
-    |> IO.inspect(label: "score")
   end
 
   defp move_robot(final_position, final_map, [], _) do
