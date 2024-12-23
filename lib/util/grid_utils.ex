@@ -56,6 +56,21 @@ defmodule GridUtils do
     end
   end
 
+  def print_position_map(map) do
+    max_row = map |> Map.keys() |> Enum.map(&elem(&1, 0)) |> Enum.max()
+    max_col = map |> Map.keys() |> Enum.map(&elem(&1, 1)) |> Enum.max()
+
+    for row <- 0..max_row do
+      for col <- 0..max_col do
+        Map.get(map, {row, col}, " ")
+      end
+      |> Enum.join("")
+      |> IO.puts()
+    end
+
+    map
+  end
+
   def opposite(:right), do: :left
   def opposite(:left), do: :right
   def opposite(:up), do: :down

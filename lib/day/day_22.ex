@@ -10,12 +10,10 @@ defmodule AOC.Day22 do
     |> Enum.sum()
   end
 
-  # 2130 -- answer
   def solve_part2(input \\ nil) do
     parse(input)
-    |> Enum.map(fn secret -> {secret, []} end)
-    |> Enum.map(fn {secret, diffs} ->
-      Enum.reduce(1..2000, {secret, diffs}, fn _, {secret, diffs} ->
+    |> Enum.map(fn secret ->
+      Enum.reduce(1..2000, {secret, []}, fn _, {secret, diffs} ->
         expand_diffs(secret, diffs)
       end)
     end)
@@ -24,13 +22,12 @@ defmodule AOC.Day22 do
       |> Enum.chunk_every(4, 1, :discard)
       |> Enum.reduce(%{}, fn chunk, acc ->
         chunk_sequence = value_diff_pairs_to_sequence(chunk)
-        last = List.last(chunk)
-        val = elem(last, 0)
 
         if Map.has_key?(acc, chunk_sequence) do
           acc
         else
-          Map.put(acc, chunk_sequence, val)
+          price = elem(List.last(chunk), 0)
+          Map.put(acc, chunk_sequence, price)
         end
       end)
     end)
@@ -74,14 +71,9 @@ defmodule AOC.Day22 do
 
   defp ones_digit(number), do: rem(number, 10)
 
-  def recompute_secret_number(secret) do
-    first =
-      (secret * 64)
-      |> mix(secret)
-      |> prune()
-
+  defp recompute_secret_number(secret) do
+    first = (secret * 64) |> mix(secret) |> prune()
     second = (first / 32) |> floor() |> mix(first) |> prune()
-
     (second * 2048) |> mix(second) |> prune()
   end
 
