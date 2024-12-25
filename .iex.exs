@@ -1,1 +1,1 @@
-AOC.Day18.solve_part2(nil, {71, 71})
+AOC.Day25.solve_part1()
