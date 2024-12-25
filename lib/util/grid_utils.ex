@@ -16,6 +16,12 @@ defmodule GridUtils do
     ])
   end
 
+  def get_bounds(map) when is_map(map) do
+    max_row = map |> Map.keys() |> Enum.map(&elem(&1, 0)) |> Enum.max()
+    max_col = map |> Map.keys() |> Enum.map(&elem(&1, 1)) |> Enum.max()
+    {max_row + 1, max_col + 1}
+  end
+
   def get_bounds(grid) when is_list(grid) do
     {length(grid), length(hd(grid))}
   end
@@ -56,13 +62,12 @@ defmodule GridUtils do
     end
   end
 
-  def print_position_map(map) do
-    max_row = map |> Map.keys() |> Enum.map(&elem(&1, 0)) |> Enum.max()
-    max_col = map |> Map.keys() |> Enum.map(&elem(&1, 1)) |> Enum.max()
+  def print_position_map(map, default \\ " ") do
+    {max_row, max_col} = get_bounds(map)
 
     for row <- 0..max_row do
       for col <- 0..max_col do
-        Map.get(map, {row, col}, " ")
+        Map.get(map, {row, col}, default)
       end
       |> Enum.join("")
       |> IO.puts()
