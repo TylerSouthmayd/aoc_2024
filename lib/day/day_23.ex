@@ -48,18 +48,17 @@ defmodule AOC.Day23 do
     find_maximal_cliques(map, cliques, MapSet.new())
   end
 
-  defp find_maximal_cliques(map, cliques, prev_cliques) do
-    if MapSet.size(cliques) == 0 do
-      prev_cliques
-    else
-      new_cliques =
-        Enum.reduce(cliques, MapSet.new(), fn key, acc ->
-          expand_clique(map, MapSet.new(key))
-          |> MapSet.union(acc)
-        end)
+  defp find_maximal_cliques(_map, cliques, prev_cliques) when cliques == %MapSet{},
+    do: prev_cliques
 
-      find_maximal_cliques(map, new_cliques, cliques)
-    end
+  defp find_maximal_cliques(map, cliques, _prev_cliques) do
+    new_cliques =
+      Enum.reduce(cliques, MapSet.new(), fn key, acc ->
+        expand_clique(map, MapSet.new(key))
+        |> MapSet.union(acc)
+      end)
+
+    find_maximal_cliques(map, new_cliques, cliques)
   end
 
   defp expand_clique(map, clique) do

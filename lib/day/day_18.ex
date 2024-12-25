@@ -2,11 +2,12 @@ defmodule AOC.Day18 do
   def solve_part1(input \\ nil, bytes \\ 1024, bounds \\ {71, 71}) do
     {_, predecessors} =
       parse(input)
-      |> djikstra_n_corrupted(bytes, bounds)
+      |> dijkstra_n_corrupted(bytes, bounds)
 
-    (Dijkstra.reconstruct_paths(predecessors, {elem(bounds, 0) - 1, elem(bounds, 1) - 1})
-     |> Enum.map(&length/1)
-     |> Enum.min()) - 1
+    Dijkstra.reconstruct_paths(predecessors, {elem(bounds, 0) - 1, elem(bounds, 1) - 1})
+    |> Enum.map(&length/1)
+    |> Enum.min()
+    |> then(&(&1 - 1))
   end
 
   def solve_part2(input \\ nil, bounds \\ {71, 71}) do
@@ -35,18 +36,14 @@ defmodule AOC.Day18 do
 
   defp binary_search_corruption(corrupted_cells, bounds, left, right, target_node) do
     mid = div(left + right, 2)
-    {distances, _} = djikstra_n_corrupted(corrupted_cells, mid, bounds)
+    {distances, _} = dijkstra_n_corrupted(corrupted_cells, mid, bounds)
 
-    case Map.has_key?(distances, target_node) do
-      true ->
-        binary_search_corruption(corrupted_cells, bounds, mid + 1, right, target_node)
-
-      false ->
-        binary_search_corruption(corrupted_cells, bounds, left, mid - 1, target_node)
-    end
+    if Map.has_key?(distances, target_node),
+      do: binary_search_corruption(corrupted_cells, bounds, mid + 1, right, target_node),
+      else: binary_search_corruption(corrupted_cells, bounds, left, mid - 1, target_node)
   end
 
-  defp djikstra_n_corrupted(corrupted_cells, n, bounds) do
+  defp dijkstra_n_corrupted(corrupted_cells, n, bounds) do
     Enum.take(corrupted_cells, n)
     |> Enum.reduce(%{}, &Map.put(&2, &1, "#"))
     |> GridUtils.position_map_to_list(bounds)

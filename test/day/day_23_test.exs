@@ -42,6 +42,6 @@ defmodule AOCDay23Test do
            td-yn
            """) == "co,de,ka,ta"
 
-    # AOC.Day23.solve_part2() == "er,fh,fi,ir,kk,lo,lp,qi,ti,vb,xf,ys,yu"
+    # assert AOC.Day23.solve_part2() == "er,fh,fi,ir,kk,lo,lp,qi,ti,vb,xf,ys,yu"
   end
 end

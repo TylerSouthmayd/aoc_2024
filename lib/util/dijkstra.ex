@@ -29,25 +29,21 @@ defmodule Dijkstra do
                                                                        {heap, distances,
                                                                         predecessors} ->
               {key, cost} = neighbor
+              original_cost = Map.get(distances, key, :infinity)
               new_cost = distance + cost
 
-              if new_cost <= Map.get(distances, key, :infinity) do
-                case new_cost == Map.get(distances, key, :infinity) do
-                  true ->
-                    distances = Map.put(distances, key, new_cost)
-                    heap = Heap.push(heap, {new_cost, key})
+              if new_cost <= original_cost do
+                distances = Map.put(distances, key, new_cost)
+                heap = Heap.push(heap, {new_cost, key})
 
-                    predecessors =
-                      Map.put(predecessors, key, [current | Map.get(predecessors, key, [])])
+                predecessors =
+                  Map.update(predecessors, key, [current], fn list ->
+                    if new_cost == original_cost,
+                      do: [current | list],
+                      else: [current]
+                  end)
 
-                    {heap, distances, predecessors}
-
-                  false ->
-                    distances = Map.put(distances, key, new_cost)
-                    predecessors = Map.put(predecessors, key, [current])
-                    heap = Heap.push(heap, {new_cost, key})
-                    {heap, distances, predecessors}
-                end
+                {heap, distances, predecessors}
               else
                 {heap, distances, predecessors}
               end

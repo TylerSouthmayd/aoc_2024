@@ -63,8 +63,9 @@ defmodule AOC.Day22 do
     end)
   end
 
+  defp expand_diffs(secret, []), do: expand_diffs(secret, [{ones_digit(secret), 0}])
+
   defp expand_diffs(secret, diffs) do
-    diffs = if length(diffs) == 0, do: [{ones_digit(secret), 0}], else: diffs
     new_secret = recompute_secret_number(secret)
     {new_secret, [{ones_digit(new_secret), ones_digit(new_secret) - ones_digit(secret)} | diffs]}
   end

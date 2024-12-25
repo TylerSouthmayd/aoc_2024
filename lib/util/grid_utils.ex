@@ -16,9 +16,9 @@ defmodule GridUtils do
     ])
   end
 
-  def get_bounds(map) when is_map(map) do
-    max_row = map |> Map.keys() |> Enum.map(&elem(&1, 0)) |> Enum.max()
-    max_col = map |> Map.keys() |> Enum.map(&elem(&1, 1)) |> Enum.max()
+  def get_bounds(grid) when is_map(grid) do
+    max_row = grid |> Map.keys() |> Enum.map(&elem(&1, 0)) |> Enum.max()
+    max_col = grid |> Map.keys() |> Enum.map(&elem(&1, 1)) |> Enum.max()
     {max_row + 1, max_col + 1}
   end
 
@@ -42,8 +42,8 @@ defmodule GridUtils do
     Enum.at(Enum.at(grid, row), col)
   end
 
-  def cell_value({row, col}, map) when is_map(map) do
-    Map.get(map, {row, col})
+  def cell_value({row, col}, grid) when is_map(grid) do
+    Map.get(grid, {row, col})
   end
 
   def list_to_position_map(grid) when is_list(grid) do
@@ -54,26 +54,26 @@ defmodule GridUtils do
     end
   end
 
-  def position_map_to_list(map, {row_bound, col_bound}) when is_map(map) do
+  def position_map_to_list(grid, {row_bound, col_bound}) when is_map(grid) do
     for row <- 0..(row_bound - 1) do
       for col <- 0..(col_bound - 1) do
-        Map.get(map, {row, col}, ".")
+        Map.get(grid, {row, col}, ".")
       end
     end
   end
 
-  def print_position_map(map, default \\ " ") do
-    {max_row, max_col} = get_bounds(map)
+  def print_position_map(grid, default \\ " ") when is_map(grid) do
+    {max_row, max_col} = get_bounds(grid)
 
     for row <- 0..max_row do
       for col <- 0..max_col do
-        Map.get(map, {row, col}, default)
+        Map.get(grid, {row, col}, default)
       end
       |> Enum.join("")
       |> IO.puts()
     end
 
-    map
+    grid
   end
 
   def opposite(:right), do: :left

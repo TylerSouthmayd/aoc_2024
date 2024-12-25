@@ -76,18 +76,17 @@ defmodule AOC.Day17 do
     |> Enum.join(",")
   end
 
-  defp run_cpu(%CPU{pointer: pointer, output: output} = cpu, instructions, halt) do
-    if pointer >= halt do
-      Enum.reverse(output)
-    else
-      {opcode, operand} = Map.get(instructions, pointer)
+  defp run_cpu(%CPU{pointer: pointer, output: output}, _instructions, halt)
+       when pointer >= halt,
+       do: Enum.reverse(output)
 
-      # CPU.print_cpu(cpu)
-      # IO.inspect([opcode, operand], label: "current instruction")
+  defp run_cpu(%CPU{pointer: pointer} = cpu, instructions, halt) do
+    {opcode, operand} = Map.get(instructions, pointer)
 
-      CPU.tick(cpu, opcode, operand)
-      |> run_cpu(instructions, halt)
-    end
+    # CPU.print_cpu(cpu)
+    # IO.inspect([opcode, operand], label: "current instruction")
+
+    run_cpu(CPU.tick(cpu, opcode, operand), instructions, halt)
   end
 
   def solve_part2(input \\ nil) do
