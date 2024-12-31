@@ -3,7 +3,7 @@ defmodule AOC.Day9.Part2 do
     storage =
       AOC.Day9.parse(input)
 
-    (map_size(storage) - 1)..0
+    Range.new(map_size(storage) - 1, 0, -1)
     |> Enum.reduce(storage, &move_blocks(&2, 0, &1))
     |> Map.values()
     |> Enum.sort_by(& &1.id)
